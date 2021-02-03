@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'Your project'
+project = 'Scaffold maker documentation'
 copyright = '2020, Your name'
 author = 'Your name'
 

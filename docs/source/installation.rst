@@ -1,9 +1,9 @@
-Installation
+Getting started
 ================
 
 .. toctree::
   :maxdepth: 2
   :caption: Contents:
 
-  installation/procedure
-  installation/docker
+  getting_started/installation
+  getting_started/running
