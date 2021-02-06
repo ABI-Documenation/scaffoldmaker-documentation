@@ -5,5 +5,5 @@ FAQ
    :maxdepth: 2
    :caption: Contents:
 
-    faq/help1
-    faq/help2
+   faq/help1
+   faq/help2

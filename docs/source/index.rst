@@ -9,12 +9,13 @@ Scaffoldmaker documentation
 This documentation outlines ...
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
+   :glob:
    :caption: Contents:
 
    introduction
    theory
-   getting started
+   installation
    tutorials
    faq
    contributors
