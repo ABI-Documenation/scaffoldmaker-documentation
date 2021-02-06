@@ -2,10 +2,10 @@ Tutorials
 ================
 
 .. toctree::
-  :maxdepth: 2
-  :caption: Contents:
+    :maxdepth: 3
+    :caption: Contents:
 
     tutorials/interface
-    tutorials/visualising_scaffold
-    tutorials/creating_surface_scaffolds
-    tutorials/creating_volume_scaffolds
+    tutorials/visualising_scaffolds/visualising_scaffolds
+    tutorials/creating_meshtype/creating_mesh_type
+    tutorials/utils
