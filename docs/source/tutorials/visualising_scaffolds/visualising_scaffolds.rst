@@ -1,11 +1,11 @@
 Example of visualising scaffolds
 ================================
 
-In this example, we will visualize a scaffold, modify it using user interface, and then export its nodal parameters.
+In this example, we will visualize a scaffold, modify it using the existing user interface, and then export its nodal parameters.
 
-Once you have successfully installed and executed a new workflow, you should see ``scaffoldmaker`` window open.
+Once you have successfully installed and executed a new workflow, you should see the ``scaffoldmaker`` window open.
 In the left top corner, find :guilabel:`Mesh type` drop down list, and choose :guilabel:`3D Bladder with Urethra 1`.
-Often, there are more than one version of parameter set
+Often, there are more than one version of the parameter set
 for each mesh type. Let's click on :guilabel:`Parameter set`, and select :guilabel:`Rat 1`.
 
 Move your mouse upward while holding :kbd:`right mouse button` to zoom in, and
@@ -29,8 +29,9 @@ of urethra has already changed.
 .. image:: ../../images/visualization_scaffold/vs3.png
     :class: with-shadow
 
-You may found some meshes are quite big. If you see part of the mesh exceeds the coordinates system's limitation and disappears on screen,
-You can rescale the mesh by holding :kbd:`A` + :kbd:`right mouse button`
+If part or all of the mesh is not visible in the field of view of the scaffoldmaker's graphics viewport, you can rescale
+the mesh by holding :kbd:`A` + :kbd:`right mouse button`
+the mesh by holding :kbd:`A` + :kbd:`right mouse button`
 and drag your mouse upward (an alternative way is to use the :guilabel:`Scale x, y , z` option). Remember to click on
 :guilabel:`Apply transformation` for confirmation.
 
