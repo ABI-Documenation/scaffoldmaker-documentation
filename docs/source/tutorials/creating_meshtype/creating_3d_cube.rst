@@ -11,31 +11,25 @@ Let's create a 3D cube as your first mesh type.
 Set-up files and modules
 -------------------------
 
-First, go to where you put :file:`scaffoldmaker`, find the :file:`.\\src\\scaffoldmaker\\meshtypes` folder. This is where you put all mesh types.
+First, navigate to where you installed scaffoldmaker, find the :file:`.\\src\\scaffoldmaker\\meshtypes` folder. This is where you put all mesh types.
 Create a mesh type file,
 e.g., :file:`meshtype_3d_cube1.py`.
 
 In the ``python`` file you just created, load the following modules.
 
-.. code-block:: python
-
-    from __future__ import division
-    import math
-    from opencmiss.utils.zinc.field import findOrCreateFieldCoordinates
-    from opencmiss.zinc.element import Element, Elementbasis
-    from opencmiss.zinc.field import Field
-    from opencmiss.zinc.node import Node
-    from scaffoldmaker.meshtypes.scaffold_base import Scaffold_base
+.. literalinclude:: ../../code/meshtype_3d_cube1.py
+   :language: python
+   :linenos:
+   :start-after: #DOC-START imports
+   :end-before: #DOC-END imports
 
 Add a new :pyth:`class`, which will contain all the information related to the mesh type.
 
-.. code-block:: python
-
-    ...
-    class MeshType_3d_cube1(Scaffold_base):
-        @staticmethod
-        def getName():
-            return '3D cube 1'
+.. literalinclude:: ../../code/meshtype_3d_cube1.py
+   :language: python
+   :linenos:
+   :start-after: #DOC-START create class cube1
+   :end-before: #DOC-START set-up user interface options
 
 .. Note::
     It's a good practice to name your mesh type file and :pyth:`class` following this particular syntax.
@@ -74,31 +68,11 @@ number of elements. For the purpose of demonstration, our cube mesh will have on
 
 Now, go back to :file:`meshtype_2d_cube1.py`. Under :pyth:`class MeshType_3d_cube1()`, add the following lines to modify the size of the square cube.
 
-.. code-block:: python
-
-    ...
-    class MeshType_3d_cube1(Scaffold_base):
-        @staticmethod
-        def getName():
-            return '3D Cube 1'
-
-        @staticmethod
-        def getDefaultOptions(parameterSetName='Default'):
-            return {
-                'size' : 1
-            }
-
-        @staticmethod
-        def getOrderedOptionNames():
-            return [
-                'size',
-            ]
-
-        @staticmethod
-        def checkOptions(options):
-            if options['size'] < 1:
-                options['size'] = 1
-
+.. literalinclude:: ../../code/meshtype_3d_cube1.py
+   :language: python
+   :linenos:
+   :start-after: #DOC-START create class cube1
+   :end-before: #DOC-END set-up user interface options
 
 +------------------------------------+---------------------------------------------------------------------+
 | Methods                            | description                                                         |
@@ -113,25 +87,13 @@ Now, go back to :file:`meshtype_2d_cube1.py`. Under :pyth:`class MeshType_3d_cub
 Creating the mesh
 ------------------
 
-Finally we can start to design the mesh. This is where you write most of your code. Consider the following code:
+Finally we can start to design the mesh. This is where you write most of your code. Include the following code in the :pyth:`MeshType_3d_cube` class:
 
-.. code-block:: python
-
-    ...
-    class MeshType_3d_cube1(Scaffold_base):
-        ...
-        @classmethod
-        def generateBaseMesh(cls, region, options):
-            fm = region.getFieldmodule()
-            fm.beginChange()
-            coordinates = findOrCreateFieldCoordinates(fm)
-            nodes = fm.findNodesetByFieldDomainType(Field.DOMAIN_TYPE_NODES)
-            nodetemplate = nodes.createNodetemplate()
-            nodetemplate.defineField(coordinates)
-            nodetemplate.setValueNumberOfVersions(coordinates, -1, Node.VALUE_LABEL_VALUE, 1)
-            nodetemplate.setValueNumberOfVersions(coordinates, -1, Node.VALUE_LABEL_D_DS1, 1)
-            nodetemplate.setValueNumberOfVersions(coordinates, -1, Node.VALUE_LABEL_D_DS2, 1)
-            nodetemplate.setValueNumberOfVersions(coordinates, -1, Node.VALUE_LABEL_D_DS3, 1)
+.. literalinclude:: ../../code/meshtype_3d_cube1.py
+    :language: python
+    :linenos:
+    :start-after: #DOC-START create mesh
+    :end-before:  # create eft
 
 Here, :pyth:`fm` handles everything in the mathematical field (mesh, nodeset, etc). Construct the coordinates system using :pyth:`.findOrCreateFieldCoordinates()`.
 We then use :pyth:`.findNodesetByFieldDomainType()` to create nodes class, and use :pyth:`.createNodetemplate()` to create a node template for all nodes.
@@ -139,24 +101,15 @@ As we want to create a cube using tri-cubic hermite interpolation, we have to se
 and the derivative of the global coordinate with respect to the local element coordinate. Therefore we call the :pyth:`.setValueNumberOfVersions()` 4 times, each one with a
 unique label to pre-define what parameters we are going to store in a node. For more details of :pyth:`Field` class, check `OpenCMISS-Zinc documentation <http://opencmiss.org/zinc/latest/classes.html>`_.
 
-.. code-block:: python
+.. literalinclude:: ../../code/meshtype_3d_cube1.py
+    :language: python
+    :start-after: # create eft
+    :end-before: # create nodes
+    :linenos:
 
-    ...
-    class MeshType_3d_cube1(Scaffold_base):
-        ...
-        @classmethod
-        def generateBaseMesh(cls, region, options):
-            ...
-            mesh = fm.findMeshByDimension(3)
-            tricubichermite = eftfactory_tricubichermite(mesh, False) # False = no cross derivative.
-            eft = tricubichermite.createEftBasic()
-            elementtemplate = mesh.createElementtemplate()
-            elementtemplate.setElementShapeType(Element.SHAPE_TYPE_CUBE)
-            result = elementtemplate.defineField(coordinates, -1, eft)
-
-Continue from above, we then initialize the mesh and define our interpolation function
+Continuing from above, we then initialize the mesh and define our interpolation function
 using :pyth:`.findMeshByDimension()` and :pyth:`eftfactory_tricubichermite()` respectively. :pyth:`eft` refers to element field template, a template that defines
-field parameter mapping and interpolation over an element. If you want to use aa interpolation function that is not included in :ref:`utils`,
+field parameter mapping and interpolation over an element. If you want to use an interpolation function that is not included in :ref:`utils`,
 you may have to manually set-up eft using basic functions provided by `Zinc <http://opencmiss.org/zinc/latest/classes.html>`_.
 
 Just like nodes, we also have to create a template for elements using :pyth:`.createElementtemplate()`.
@@ -167,32 +120,11 @@ on the element template using the element field template. For more details, chec
 
 Now we just have to add coordinates and derivatives to each nodes.
 
-.. code-block:: python
-
-    ...
-    class MeshType_3d_cube1(Scaffold_base):
-        ...
-        @classmethod
-        def generateBaseMesh(cls, region, options):
-            ...
-            size = options["size"]
-            nodeIdentifier = 1
-            cache = fm.createFieldcache()
-            dx_ds1 = [ size, 0.0, 0.0 ]
-            dx_ds2 = [ 0.0, size, 0.0 ]
-            dx_ds3 = [ 0.0, 0.0, size ]
-
-            for n3 in range(2):
-                for n2 in range(2):
-                    for n1 in range (2):
-                        node = nodes.createNode(nodeIdentifier, nodetemplate)
-                        cache.setNode(node)
-                        x = [n1 * size, n2 * size, n3 * size]
-                        coordinates.setNodeParameters(cache, -1, Node.VALUE_LABEL_VALUE, 1, x)
-                        coordinates.setNodeParameters(cache, -1, Node.VALUE_LABEL_D_DS1, 1, dx_ds1)
-                        coordinates.setNodeParameters(cache, -1, Node.VALUE_LABEL_D_DS2, 1, dx_ds2)
-                        coordinates.setNodeParameters(cache, -1, Node.VALUE_LABEL_D_DS3, 1, dx_ds3)
-                        nodeIdentifier += 1
+.. literalinclude:: ../../code/meshtype_3d_cube1.py
+    :language: python
+    :start-after: # create nodes
+    :end-before: # create element
+    :linenos:
 
 We create each node by calling the :pyth:`.createNode()` method with our already defined node template.
 Note that each node must have an unique identifier which is important for creating elements in the next step.
@@ -201,20 +133,11 @@ assigning parameters to each node with :pyth:`.setNodeParameters()` method.
 
 We are almost there. Now, let's create the element which contains all our nodes. As there is only 1 element, the task is simple.
 
-.. code-block:: python
-
-    ...
-    class MeshType_3d_cube1(Scaffold_base):
-        ...
-        @classmethod
-        def generateBaseMesh(cls, region, options):
-            ...
-            elementIdentifier = 1
-            element = mesh.createElement(elementIdentifier, elementtemplate)
-            element.setNodesByIdentifier(eft, [1, 2, 3, 4, 5, 6, 7, 8])
-
-            fm.endChange()
-            return []
+.. literalinclude:: ../../code/meshtype_3d_cube1.py
+    :language: python
+    :start-after: # create element
+    :end-before: # DOC-END create mesh
+    :linenos:
 
 Be careful, the order of node identifier matters. For example, between node 1 and 2, we use the derivatives of the global
 coordinates with respect to the local coordinates in the first direction, e.g. :pyth:`dx_ds1`. Whereas :pyth:`dx_ds2`
