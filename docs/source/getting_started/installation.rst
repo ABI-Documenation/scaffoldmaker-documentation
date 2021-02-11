@@ -3,8 +3,8 @@ Installation
 *********
 
 .. toctree::
-   :maxdepth: 2
-
+    :maxdepth: 2
+    :caption: Contents:
 =========
 Procedure
 =========
