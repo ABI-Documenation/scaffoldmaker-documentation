@@ -28,8 +28,6 @@ author = 'Your name'
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'nbsphinx',
-    'nbsphinx_link',
     'recommonmark',
     'sphinx.ext.autosectionlabel'
 ]
